@@ -2,6 +2,7 @@ package classes;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import javafx.application.Platform;
 import javafx.scene.control.ListView;
@@ -9,8 +10,13 @@ import javafx.scene.control.ListView;
 public class IncomingReader implements Runnable {
 	private String message;
 	private BufferedReader reader;
-	private ListView<String> incoming = new ListView<>();
-
+	private ListView<String> incoming;
+	
+	public IncomingReader(BufferedReader reader,ListView<String> incoming) {
+		this.reader = reader;
+		this.incoming = incoming;
+	}
+	
 	@Override
 	public void run() {
 		try {
@@ -24,8 +30,9 @@ public class IncomingReader implements Runnable {
 						incoming.getItems().add(0, message + "\n");	
 					}
 				});
+				Thread.sleep(1000);
 			}
-		} catch (IOException ex) { ex.printStackTrace();}
+		} catch (IOException | InterruptedException ex) { ex.printStackTrace();}
 
 	}
 

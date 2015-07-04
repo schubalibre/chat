@@ -9,6 +9,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -28,6 +30,12 @@ public class ChatFensterUI extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		setUpChatFrame();
+		
+		Scene scene = new Scene(chatFrame, 250, 500);
+		
+		primaryStage.setTitle("Chat");
+		primaryStage.setScene(scene);
+        primaryStage.show();
 	}
 	
 	private void setUpChatFrame() {
@@ -38,7 +46,7 @@ public class ChatFensterUI extends Application {
 		
 		
 		outgoing = new TextField();
-		outgoing.setPrefWidth(210);
+		outgoing.setPrefWidth(200);
 		outgoing.setOnAction(e -> sendMessage());
 		
 		Button sendButton = new Button("Send");
@@ -46,9 +54,10 @@ public class ChatFensterUI extends Application {
 		
 		chatFrame.setCenter(qScroller);
 		chatFrame.setBottom(new HBox(outgoing,sendButton));
+		
 		setUpNetworking();
 		
-		Thread readerThread = new Thread(new IncomingReader());
+		Thread readerThread = new Thread(new IncomingReader(reader,incoming));
 		readerThread.start();
 		
 	}
@@ -76,5 +85,4 @@ public class ChatFensterUI extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
-
 }
