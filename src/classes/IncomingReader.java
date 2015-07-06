@@ -2,7 +2,6 @@ package classes;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import javafx.application.Platform;
 import javafx.scene.control.ListView;
@@ -23,7 +22,6 @@ public class IncomingReader implements Runnable {
 
 			while((message = reader.readLine()) != null){
 				System.out.println("client read " + message);
-				
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
