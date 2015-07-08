@@ -7,14 +7,12 @@ import java.util.ArrayList;
 
 public class VerySimpleChatServer {
 	
-	ArrayList<PrintWriter> clientOutputStream;
-	
 	public static void main(String[] args) {
 		new VerySimpleChatServer().start();
 	}
 
 	private void start() {
-		clientOutputStream = new ArrayList<PrintWriter>();
+		ArrayList<PrintWriter> clientOutputStream = new ArrayList<PrintWriter>();
 		try {
 			ServerSocket serverSocket = new ServerSocket(8080);
 			while(true){
@@ -22,7 +20,7 @@ public class VerySimpleChatServer {
 				PrintWriter writer = new PrintWriter(clientScoket.getOutputStream());
 				clientOutputStream.add(writer);
 				
-				Thread t = new Thread(new ClientHandler(clientScoket));
+				Thread t = new Thread(new ClientHandler(clientScoket, clientOutputStream));
 				t.start();
 				System.out.println("client connection established");
 			}

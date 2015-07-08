@@ -5,17 +5,21 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 
 public class ClientHandler implements Runnable {
 
 	BufferedReader reader;
 	Socket socket;
+	ArrayList<PrintWriter> clientOutputStream;
+	
 
-	public ClientHandler(Socket clientSocket) {
+	public ClientHandler(Socket clientSocket, ArrayList<PrintWriter> clientOutputStream) {
 		try {
 			socket = clientSocket;
 			InputStreamReader isReader = new InputStreamReader(	socket.getInputStream());
 			reader = new BufferedReader(isReader);
+			this.clientOutputStream = clientOutputStream;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -41,14 +45,16 @@ public class ClientHandler implements Runnable {
 	}
 
 	private void broadcastMessage(String message) {
-		try {
+		
+		for(PrintWriter outClients : clientOutputStream){
+			try {
 
-			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-
-			out.println(message);
-
-		} catch (Exception e) {
-			e.printStackTrace();
+				outClients.println(message);
+				outClients.flush();
+	
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
