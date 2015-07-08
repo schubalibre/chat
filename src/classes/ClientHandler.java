@@ -8,30 +8,44 @@ import java.net.SocketException;
 import java.util.ArrayList;
 
 public class ClientHandler implements Runnable {
+
 	BufferedReader reader;
 	Socket socket;
 	ArrayList<PrintWriter> clientOutputStream;
 	
+
 	public ClientHandler(Socket clientSocket, ArrayList<PrintWriter> clientOutputStream) {
 		try {
 			socket = clientSocket;
-			InputStreamReader isReader = new InputStreamReader(socket.getInputStream());
+			InputStreamReader isReader = new InputStreamReader(	socket.getInputStream());
 			reader = new BufferedReader(isReader);
-		} catch (Exception ex) { ex.printStackTrace(); }
+			this.clientOutputStream = clientOutputStream;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
+
+	@Override
 
 	public void run() {
 		String message;
 		try {
 			message = reader.readLine();
-			while(message != null) {
+
+			while (message != null) {
+
 				System.out.println("read " + message);
 				broadcastMessage(message);
-				message = reader.readLine();
+				
 			}
-		} catch (SocketException sx) { System.out.println("client connection terminated");
-		
-		} catch (Exception ex) { ex.printStackTrace(); }
+
+
+		} catch (SocketException sx) {
+			System.out.println("client connection terminated");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
 
 	}
 
@@ -41,9 +55,12 @@ public class ClientHandler implements Runnable {
 			try {
 				outClients.println(message);
 				outClients.flush();
-			} catch (Exception ex) { ex.printStackTrace(); }
+	
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		
+
 	}
 
 }
