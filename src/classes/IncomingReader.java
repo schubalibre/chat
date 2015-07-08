@@ -25,7 +25,7 @@ public class IncomingReader implements Runnable {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						incoming.getItems().add(0, message + "\n");	
+						incoming.getItems().add(message + "\n");	
 					}
 				});
 				Thread.sleep(1000);
