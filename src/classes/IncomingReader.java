@@ -7,6 +7,16 @@ import javafx.application.Platform;
 import javafx.scene.control.ListView;
 
 public class IncomingReader implements Runnable {
+	
+	/*
+	 * Liest alle einkommenden Nachrichten ein.
+	 * Implementiert Runnable für die Threads mit Methode run.
+	 * Schreibt neue Nachrichten in ArrayListe.
+	 * 
+	 *
+	 */
+	
+	
 	private String message;
 	private BufferedReader reader;
 	private ListView<String> incoming;
@@ -18,6 +28,9 @@ public class IncomingReader implements Runnable {
 	
 	@Override
 	public void run() {
+		/*
+		 * hört auf Kanal und hört auf neue Nachrichten, packt es in Liste.
+		 */
 		try {
 
 			while((message = reader.readLine()) != null){
@@ -25,7 +38,7 @@ public class IncomingReader implements Runnable {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						incoming.getItems().add(0, message + "\n");	
+						incoming.getItems().add(message + "\n");	
 					}
 				});
 				Thread.sleep(1000);

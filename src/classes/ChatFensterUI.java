@@ -20,6 +20,10 @@ import javafx.stage.Stage;
 
 public class ChatFensterUI extends Application {
 	
+	/*
+	 * Oberfläche für den Chat.
+	 */
+	
 	ListView<String> incoming;
 	TextField outgoing;
 	BorderPane chatFrame = new BorderPane();
@@ -28,6 +32,7 @@ public class ChatFensterUI extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
 		setUpChatFrame();
 		
 		Scene scene = new Scene(chatFrame, 250, 500);
@@ -37,6 +42,13 @@ public class ChatFensterUI extends Application {
         primaryStage.show();
 	}
 	
+	/*
+	 * incoming sind die ankommenden Nachrichten.
+	 * Scrollen ermöglichen.
+	 * outgoing ist das Textfeld zum Schreiben.
+	 * Wenn man auf Enter klickt, ruft sie die Methode sendMessage auf.
+	 * Button macht das Gleiche.
+	 */
 	private void setUpChatFrame() {
 		incoming = new ListView<>();
 
@@ -56,14 +68,19 @@ public class ChatFensterUI extends Application {
 		
 		setUpNetworking();
 		
+		//Thread für IncomingReader starten
 		Thread readerThread = new Thread(new IncomingReader(reader,incoming));
 		readerThread.start();
 		
 	}
 
 	private void setUpNetworking() {
+		/*
+		 * Socket initialisieren, input und output zugreifbar.
+		 * 
+		 */
 		try {
-			Socket socket = new Socket("89.247.113.62", 8080);
+			Socket socket = new Socket("192.168.0.109", 8080);
 			InputStream in = socket.getInputStream();
 			OutputStream out = socket.getOutputStream();
 			InputStreamReader streamReader = new InputStreamReader(in);
@@ -74,6 +91,11 @@ public class ChatFensterUI extends Application {
 		
 	}
 
+	/*
+	 * Holt sich den Text aus der Textbox und packt es in den Writer, den Kanal zum Rausschicken.
+	 * Flush schickt es los.
+	 * TEXTbox wieder leer machen.
+	 */
 	private void sendMessage() {
 		writer.println(outgoing.getText());
 		writer.flush();
