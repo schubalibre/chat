@@ -32,12 +32,12 @@ public class ClientHandler implements Runnable {
 			do {
 				//Input
 				clientMessage = socketInputStream.readLine();
-				System.out.println("Client sendet: " + clientMessage);
+//				System.out.println("Client sendet: " + clientMessage);
 				//Output
-				socketOutputStream.write(clientMessage);
+				socketOutputStream.println(clientMessage);
 				socketOutputStream.flush();
 			} while (clientMessage != null);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

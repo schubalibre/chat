@@ -33,8 +33,8 @@ public class Chat extends Application {
 	public void start(Stage stage) throws Exception {
 		setUpNetworking();
 		setUpChatFrame();
-		socketOutputStreamReaderThread = new Thread(new GetClientHandlerMessage(socketInputStream, clientHandlerMessage));
-		socketOutputStreamReaderThread.start();
+		readMessage();
+
 
 		
 		Scene scene = new Scene(chatFrame, 250, 500);
@@ -60,13 +60,16 @@ public class Chat extends Application {
 	}
 	
 	private void sendMessage() {
+		//PRINTLN auf keinen fall write!!!!!!!!!
 		socketOutputStream.println(clientMessage.getText());
 		socketOutputStream.flush();
 		clientMessage.setText("");
-		clientMessage.requestFocus();
 	}
 	
-	
+	private void readMessage() {
+		socketOutputStreamReaderThread = new Thread(new SocketReader(socketInputStream, clientHandlerMessage));
+		socketOutputStreamReaderThread.start();
+	}
 	
 	public static void main(String[] args) {
 		launch(args);

@@ -16,7 +16,7 @@ public class MeinServer {
 
 	private void start() {
 		try {
-			System.out.println("Server gestartet");
+//			System.out.println("Server gestartet");
 			//ServerSocket erzeugen, mit der Portnummer 4444
 			ServerSocket serverSocket = new ServerSocket(4444);
 			
@@ -32,7 +32,7 @@ public class MeinServer {
 //				//Eigenen Thread für Client starten um auf neue Client-Anfrage reagieren zu können.
 //				Thread clientThread = new Thread(new übung.ClientHandler(clientSocket, clientOutputStream));
 				
-				System.out.println("Verbindung mit Client hergestellt");
+//				System.out.println("Verbindung mit Client hergestellt");
 				Thread clientThread = new Thread(new übung.ClientHandler(clientSocket));
 				clientThread.start();
 			}
