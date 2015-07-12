@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class VerySimpleChatServer {
 	
+	//Erzeugt ein Objekt von sich selbst
 	public static void main(String[] args) {
 		new VerySimpleChatServer().start();
 	}
@@ -16,12 +17,17 @@ public class VerySimpleChatServer {
 		try {
 			ServerSocket serverSocket = new ServerSocket(8080);
 			while(true){
-				Socket clientScoket = serverSocket.accept();
-				PrintWriter writer = new PrintWriter(clientScoket.getOutputStream());
+				Socket clientSocket = serverSocket.accept();
+				
+				// Ist der Server jetzt blockiert bis eine client-Anfrage kommt?
+				// Dann müsste der Thread nämlich früher gestartet werden, schon vor .accept()?
+				
+				PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
 				clientOutputStream.add(writer);
 				
-				Thread t = new Thread(new ClientHandler(clientScoket, clientOutputStream));
-				t.start();
+
+				Thread clientThread = new Thread(new ClientHandler(clientSocket, clientOutputStream));
+				clientThread.start();
 				System.out.println("client connection established");
 			}
 		} catch (Exception ex) {ex.printStackTrace();}
