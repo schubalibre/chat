@@ -19,7 +19,6 @@ public class IncomingReader implements Runnable {
 	@Override
 	public void run() {
 		try {
-
 			while((message = reader.readLine()) != null){
 				System.out.println("client read " + message);
 				Platform.runLater(new Runnable() {

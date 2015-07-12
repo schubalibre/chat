@@ -17,8 +17,7 @@ public class ClientHandler implements Runnable {
 	public ClientHandler(Socket clientSocket, ArrayList<PrintWriter> clientOutputStream) {
 		try {
 			socket = clientSocket;
-			InputStreamReader isReader = new InputStreamReader(	socket.getInputStream());
-			reader = new BufferedReader(isReader);
+			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			this.clientOutputStream = clientOutputStream;
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -29,12 +28,11 @@ public class ClientHandler implements Runnable {
 	public void run() {
 		String message;
 		try {
-			message = reader.readLine();
-			while (message != null) {
+			do {
+				message = reader.readLine();
 				System.out.println("read " + message);
 				broadcastMessage(message);
-				message = reader.readLine();
-			}
+			} while (message != null);
 
 		} catch (SocketException sx) {
 			System.out.println("client connection terminated");
@@ -45,7 +43,6 @@ public class ClientHandler implements Runnable {
 	}
 
 	private void broadcastMessage(String message) {
-		
 		for(PrintWriter outClients : clientOutputStream){
 			try {
 

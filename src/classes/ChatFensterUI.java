@@ -19,7 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class ChatFensterUI extends Application {
-	
+	//Attribute
 	ListView<String> incoming;
 	TextField outgoing;
 	BorderPane chatFrame = new BorderPane();
@@ -56,6 +56,7 @@ public class ChatFensterUI extends Application {
 		
 		setUpNetworking();
 		
+		//fragt immer wieder gibts was neues
 		Thread readerThread = new Thread(new IncomingReader(reader,incoming));
 		readerThread.start();
 		
@@ -64,10 +65,10 @@ public class ChatFensterUI extends Application {
 	private void setUpNetworking() {
 		try {
 			//Roberts IP
-			Socket socket = new Socket("141.64.165.27", 8080);
+//			Socket socket = new Socket("141.64.165.27", 8080);
 			
 			//Meine IP
-//			Socket socket = new Socket("127.0.0.1", 8080);
+			Socket socket = new Socket("127.0.0.1", 8080);
 			InputStream in = socket.getInputStream();
 			OutputStream out = socket.getOutputStream();
 			InputStreamReader streamReader = new InputStreamReader(in);
