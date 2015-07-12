@@ -3,6 +3,7 @@ package übung;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import javafx.application.Platform;
 import javafx.scene.control.ListView;
 
 public class GetClientHandlerMessage implements Runnable {
@@ -24,8 +25,14 @@ public class GetClientHandlerMessage implements Runnable {
 			do {
 				message = socketInputStream.readLine();
 				System.out.println("ClientHandler sendet: " + clientHandlerMessage);
-				clientHandlerMessage.getItems().add(message + "\n");
 				
+				//Fix für FX hat soinst probleme mit FX
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						clientHandlerMessage.getItems().add(message + "\n");
+					}
+				});
 			} while (message != null);
 		} catch (IOException e) {
 			e.printStackTrace();
