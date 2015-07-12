@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import classes.ClientHandler;
 import classes.VerySimpleChatServer;
@@ -16,24 +17,19 @@ public class MeinServer {
 
 	private void start() {
 		try {
-//			System.out.println("Server gestartet");
+			ArrayList<PrintWriter> socketOutputStreams = new ArrayList();
+
 			//ServerSocket erzeugen, mit der Portnummer 4444
 			ServerSocket serverSocket = new ServerSocket(4444);
-			
+
 			//Dauerschleife um Client-Anfragen entgegenzunehmen und in eigene Htreads zu stecken.
 			while(true) {
 				//Client-Verbindungsanfrage zulassen
 				Socket clientSocket = serverSocket.accept();
+				PrintWriter socketOutputStream = new PrintWriter(clientSocket.getOutputStream());
+				socketOutputStreams.add(socketOutputStream);
 				
-//				//Outputstream des Clients abgreifen
-//				PrintWriter clientOutputStream = new PrintWriter(clientSocket.getOutputStream());
-//					//REICHT ES EVTL. AUS DEN OUTPUTSTREAM IM HANDLER ZU ERZEUGEN?
-//				
-//				//Eigenen Thread für Client starten um auf neue Client-Anfrage reagieren zu können.
-//				Thread clientThread = new Thread(new übung.ClientHandler(clientSocket, clientOutputStream));
-				
-//				System.out.println("Verbindung mit Client hergestellt");
-				Thread clientThread = new Thread(new übung.ClientHandler(clientSocket));
+				Thread clientThread = new Thread(new übung.ClientHandler(clientSocket, socketOutputStreams));
 				clientThread.start();
 			}
 
